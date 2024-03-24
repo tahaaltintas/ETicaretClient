@@ -4,7 +4,7 @@ import { Create_Product } from '../../../contracts/create-product';
 import { resourceUsage } from 'process';
 import { HttpErrorResponse } from '@angular/common/http';
 import { List_Product } from '../../../contracts/list-product';
-import { firstValueFrom } from 'rxjs';
+import { Observable, firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -31,10 +31,10 @@ export class ProductService {
   }
 
   async read(page: number = 0, size: number = 5, succesCallBack?: () => void, errorCallBack?: (errorMessage: string) => void): Promise<{ totalCount: number; products: List_Product[] }> {
-    const promiseData: Promise<{ totalCount: number; products: List_Product[] }> = this.httpClientService.get<{ totalCount: number; products: List_Product[] }>({
+    const promiseData: Promise<{ totalCount: number; products: List_Product[] }> = firstValueFrom(this.httpClientService.get<{ totalCount: number; products: List_Product[] }>({
       controller: "products",
       queryString: `page=${page}&size=${size}`
-    }).toPromise();
+    }));
 
     promiseData.then(d => succesCallBack())
       .catch((errorResponse: HttpErrorResponse) => errorCallBack(errorResponse.message));
@@ -42,14 +42,11 @@ export class ProductService {
     return await promiseData;
   }
 
-  // async read(page?: number, size?: number, successCallBack?: () => void, errorCallback?: (errorMessage: string) => void): Promise<{ totalCount: number; products: List_Product[] }> {
-  //   const promiseData: Promise<{ totalCount: number; products: List_Product[] }> = firstValueFrom(this.httpClientService.get<{ totalCount: number; products: List_Product[] }>({
-  //     controller: "products",
-  //     queryString: `page=${page}&size=${size}`
-  //   }));
-  //   promiseData.then(p => successCallBack())
-  //     .catch((errorResponse: HttpErrorResponse) => errorCallback(errorResponse.message));
+  async delete(id:string){
+    const deleteObservable: Observable<any> = this.httpClientService.delete<any>({
+      controller:"products"
+    },id);
 
-  //   return await promiseData;
-  // }
+    await firstValueFrom(deleteObservable);
+  }
 }
