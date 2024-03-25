@@ -28,12 +28,12 @@ export class DialogParameters {
   componentType: ComponentType<any>;
   data: any;
   afterClosed: () => void;
-  options : Partial<Dialogoptions> = new Dialogoptions();
+  options: Partial<Dialogoptions> = new Dialogoptions();
 }
 
-export class Dialogoptions{
-  width? : string ="400px";
-  height? : string;
-  position? : DialogPosition
+export class Dialogoptions {
+  width?: string = "400px";
+  height?: string;
+  position?: DialogPosition
 
 }

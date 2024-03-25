@@ -9,8 +9,7 @@ import { FileUploadDialogComponent } from './file-upload-dialog/file-upload-dial
 
 @NgModule({
   declarations: [
-    DeleteDialogComponent,
-    FileUploadDialogComponent
+    DeleteDialogComponent
   ],
   imports: [
     CommonModule,
